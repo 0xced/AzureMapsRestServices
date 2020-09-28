@@ -11,8 +11,6 @@ using AzureMapsToolkit.Render;
 using AzureMapsToolkit;
 using System.Threading.Tasks;
 using System;
-using System.IO;
-using static System.Net.Mime.MediaTypeNames;
 using AzureMapsToolkit.Mobility;
 using AzureMapsToolkit.Route;
 
@@ -20,9 +18,14 @@ namespace AzureMapsToolkit_Core_Test
 {
     public class UnitTest
     {
+        private static readonly string _KEY;
 
-        const string _KEY = AzureMapsKey._KEY;
-
+        static UnitTest()
+        {
+            _KEY = Environment.GetEnvironmentVariable("AZURE_MAPS_KEY");
+            if (string.IsNullOrEmpty(_KEY))
+                throw new Exception("Please set the AZURE_MAPS_KEY environment variable to a valid Azure Maps key.");
+        }
 
         [Fact]
         public void InvalidIPCountry()
@@ -227,7 +230,7 @@ namespace AzureMapsToolkit_Core_Test
 
         }
 
-       
+
         [Fact]
         public void GetDistanceMatrix()
         {
